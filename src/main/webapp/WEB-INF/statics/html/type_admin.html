@@ -1,0 +1,238 @@
+<style>
+    #typeForm{
+        margin-top: 100px;
+        margin-left: 20px;
+    }
+    .inline-button{
+        width: 100px !important;
+    }
+</style>
+
+<form class="layui-form layui-form-pane" id="typeForm">
+    <div class="layui-form-item">
+        <label class="layui-form-label">请选择分类</label>
+        <div class="layui-input-inline">
+            <select name="category" id="category" lay-filter="category">
+            </select>
+        </div>
+        <div class="layui-input-inline ">
+            <select name="type" id="type" lay-filter="type">
+            </select>
+        </div>
+        <div class="layui-input-inline inline-button">
+            <button class="layui-btn layui-btn-s edit">编辑</button>
+        </div>
+        <div class="layui-input-inline inline-button">
+            <button class="layui-btn layui-btn-s layui-btn-danger delete">删除</button>
+        </div>
+        <div class="layui-input-inline inline-button">
+            <button class="layui-btn layui-btn-s create">新建</button>
+        </div>
+    </div>
+</form>
+
+<!-- 编辑分类弹框模版 -->
+<script type="text/html" id="editPopup">
+    <form method="post">
+        <!-- 不能同时编辑一级分类和二级分类 -->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">{{d.label}}</label>
+                <div class="layui-input-inline">
+                    <input id="editType" autocomplete="off" class="layui-input" value="{{d.value}}" />
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
+
+<!-- 新建分类弹框模版 -->
+<script type="text/html" id="createPopup">
+    <form>
+        <!-- 不能同时新建一级分类和二级分类 -->
+        {{#  if(d.category!=""){}}
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">一级分类</label>
+                <div class="layui-input-inline">
+                    <input autocomplete="off" disabled="disabled" maxlength=10 class="layui-input" value="{{d.category}}" />
+                </div>
+            </div>
+        </div>
+        {{#  } }}
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">{{d.label}}</label>
+                <div class="layui-input-inline">
+                    <input id="createType" autocomplete="off" maxlength=10 class="layui-input" placeholder="{{d.label}}" />
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
+
+<!-- 引入分类选择渲染js -->
+<script type="text/javascript" src="/js/type_select.js"></script>
+
+<script>
+    layui.use(['jquery','laytpl'], function() {
+        var $ = layui.jquery,
+            $form = $('#typeForm'),
+            laytpl = layui.laytpl;
+
+        //按钮事件监听
+        $(".edit").click(function () {
+            //如果未选择任何分类则直接返回
+            if(!categoryId){
+                layer.msg('请先选择分类', {icon: 2});
+                return false;
+            }
+            //弹出编辑框
+            var data={
+                "handle":editPopup,  //模版视图id
+                //弹框标签和输入框值，根据是否选择二级分类（typeId是否为null）进行区别
+                "label":typeId?"二级分类":"一级分类",
+                "value":typeId?$form.find('select[name=type]').val():$form.find('select[name=category]').val()
+            };
+
+            open("编辑分类",data);
+            return false;
+        })
+        $(".delete").click(function () {
+            //如果未选择任何分类则直接返回
+            if(!categoryId){
+                layer.msg('请先选择分类', {icon: 2});
+                return false;
+            }
+            var warning;
+            //根据是否选择二级分类判断删除的是一级分类还是二级分类
+            if(typeId){
+                warning="确定要删除该二级分类吗？该二级分类下的所有文章将会被删除。";
+            }else{
+                warning="确定要删除该一级分类吗？该一级分类及其下属的二级分类下的所有文章将会被删除。";
+            }
+            layer.confirm(warning,{icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "",
+                    type: "DELETE",
+                    data:JSON.stringify({
+                        "ID":typeId?typeId:categoryId
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if(result.status=="200"){
+                            layer.msg('删除分类成功', {icon: 1});
+                            layer.close(index);
+                            //重新初始化分类选项
+                            init();
+                        }else{
+                            layer.msg(result.info, {icon: 1});
+                        }
+                    }
+                });
+            });
+            return false;
+        })
+        $(".create").click(function () {
+            //弹出编辑框
+            var data={
+                "handle":createPopup, //模版视图id
+                //弹框标签和输入框值，根据是否选择一级分类进行区别
+                "label":categoryId?"二级分类":"一级分类",
+                "category":$form.find('select[name=category]').val()
+            };
+            open("新建分类",data);
+            return false;
+        })
+
+        //打开编辑框
+        function open(title,data) {
+            //渲染模版视图
+            var view = data.handle.innerHTML;
+            laytpl(view).render(data,function(html){
+                view=html;
+            });
+            layer.open({
+                type: 1 ,   //Page层类型,
+                btn:['确认'], //按钮
+                btnAlign: 'c',//按钮居中排列
+                title: title,
+                skin: 'layui-layer-prompt',
+                shade: 0.6,      //遮罩透明度
+                maxmin: true,    //允许全屏最小化
+                anim: 5 ,        //0-6的动画形式，-1不开启
+                content:view,
+                //确认按钮的回调函数
+                yes: function(index, layero){
+                    //编辑分类处理
+                    if(data.handle==editPopup){
+                        //编辑之前的类名,根据是否选择二级分类判断在编辑哪一级分类
+                        var before=typeId?$form.find('select[name=type]').val():$form.find('select[name=category]').val();
+                        //如果未进行编辑则直接关闭弹框
+                        if($("#editType").val()==before){
+                            layer.close(index);
+                        //判断类名是否为空
+                        }else if(!$("#editType").val()){
+                            layer.tips('类名不能未空', '#editType', {
+                                tips: 2
+                            });
+                        //ajax提交数据
+                        }else{
+                            $.ajax({
+                                url: "",
+                                type: "PUT",
+                                data:JSON.stringify({
+                                    "ID":typeId?typeId:categoryId,
+                                    "typeName":$("#editType").val()
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (result) {
+                                    if(result.status=="200"){
+                                        layer.msg('编辑分类成功', {icon: 1});
+                                        layer.close(index);
+                                        //重新初始化分类选项
+                                        init();
+                                    }else{
+                                        layer.msg(result.info, {icon: 1});
+                                    }
+                                }
+                            });
+                        }
+                    //新建分类处理
+                    }else{
+                        if(!$("#createType").val()){
+                            layer.tips('类名不能未空', '#createType', {
+                                tips: 2
+                            });
+                        //ajax提交数据
+                        }else {
+                            $.ajax({
+                                url: "",
+                                type: "PUT",
+                                data:JSON.stringify({
+                                    "parentID": categoryId?categoryId:null,
+                                    "typeName": $("#createType").val()
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.status == "200") {
+                                        layer.msg('新建分类成功', {icon: 1});
+                                        layer.close(index);
+                                        //重新初始化分类选项
+                                        init();
+                                    } else {
+                                        layer.msg(result.info, {icon: 1});
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
