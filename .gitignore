@@ -1,2 +1,4 @@
 #数据库配置文件
 db.properties
+#编译文件夹
+target
