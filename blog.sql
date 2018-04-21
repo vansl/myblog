@@ -14,6 +14,7 @@ CREATE TABLE `user` (
   `username` VARCHAR(30) NOT NULL COMMENT '用户名',
   `password` VARCHAR(30) NOT NULL COMMENT '用户密码',
   `role` VARCHAR(20) DEFAULT 'user' COMMENT '用户权限',
+  UNIQUE (`username`),
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -36,8 +37,10 @@ CREATE TABLE `blog` (
 --
 CREATE TABLE `blog_type` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-  `category` VARCHAR(30) NOT NULL COMMENT '一级分类',
-  `type` VARCHAR(30) NOT NULL COMMENT '二级分类',
+  `type_name` VARCHAR(30) NOT NULL COMMENT '分类名称',
+  `parent_id` int NOT NULL COMMENT '父分类id',
+  `user_id` int NOT NULL COMMENT '用户ID',
+  UNIQUE (`type_name`,`parent_id`),
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 

@@ -30,7 +30,7 @@ public class AdminController {
 
     @GetMapping("/blog/list")
     @ResponseBody
-    public String blogList(HttpServletRequest request){
+    public String blogLwist(HttpServletRequest request){
         /*Cookie[] cookies=request.getCookies();
         if (cookies!=null){
             for (Cookie cookie:cookies) {

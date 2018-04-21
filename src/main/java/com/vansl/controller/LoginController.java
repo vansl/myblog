@@ -1,6 +1,6 @@
 package com.vansl.controller;
 
-import com.vansl.pojo.LoginInfo;
+import com.vansl.entity.LoginInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;

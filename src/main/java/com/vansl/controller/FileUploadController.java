@@ -30,8 +30,7 @@ public class FileUploadController  {
             //将当前上下文初始化给 CommonsMutipartResolver (多部分解析器)
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
             //检查form中是否有enctype="multipart/form-data"
-            if(multipartResolver.isMultipart(request))
-            {
+            if(multipartResolver.isMultipart(request)) {
                 //将request变成多request
                 MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
                 //获取multiRequest中所有的文件名
@@ -40,8 +39,8 @@ public class FileUploadController  {
                 while(iter.hasNext()){
                     //一次遍历所有的文件
                     MultipartFile file = multiRequest.getFile(iter.next().toString());
-                    if(file!=null){
-
+                    if(file!=null&&file.getOriginalFilename()!=""){
+                        System.out.println(file.getOriginalFilename());
                         String path = request.getServletContext().getRealPath("/WEB-INF/statics/share/")+file.getOriginalFilename();
                         //上传
                         file.transferTo(new File(path));

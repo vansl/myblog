@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- Dao接口完全限定名 -->
+<mapper namespace="com.vansl.dao.BlogTypeDao">
+  <!-- 结果集映射 -->
+  <resultMap id="BlogTypeResult" type="com.vansl.entity.BlogType">
+    <id property="id" column="id" />
+    <result property="typeName" column="type_name"/>
+    <result property="parentId" column="parent_id"/>
+    <result property="userId" column="user_id"/>
+  </resultMap>
+
+  <!-- 封装SQL语句 -->
+  <!-- blog_type表中基本字段 -->
+  <sql id="Base_Column_List" >
+    blog_type.id,blog_type.type_name,blog_type.parent_id,blog_type.user_id
+  </sql>
+
+  <!-- 通过id查询博客分类信息 -->
+  <!-- id为接口中的方法名 -->
+  <select id="selectById" resultMap="BlogTypeResult">
+    SELECT
+      <include refid="Base_Column_List"/>
+    FROM
+      blog_type
+    WHERE
+      id=#{id}
+  </select>
+
+  <!--  通过userId查询所有分类数据 -->
+  <select id="selectAll" resultMap="BlogTypeResult">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM
+      blog_type
+    WHERE
+      user_id=#{userId}
+  </select>
+
+  <!-- 通过博客id查询博客分类 -->
+  <select id="selectByBlogId" resultMap="BlogTypeResult">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM
+      blog_type,blog
+    WHERE
+      blog_type.id=blog.type_id
+    AND
+      blog.id=#{blogId}
+  </select>
+
+  <!-- 添加博客分类 -->
+  <insert id="insertBlogType" parameterType="com.vansl.entity.BlogType" >
+    INSERT INTO
+      blog_type(
+        type_name,
+        parent_id,
+        user_id
+      )
+    VALUES(
+      #{typeName},
+      #{parentId},
+      #{userId}
+    )
+  </insert>
+
+
+  <!-- 更新博客分类 -->
+  <update id="updateBlogType" parameterType="com.vansl.entity.BlogType" >
+    UPDATE
+      blog_type
+    SET
+      type_name=#{typeName}
+    WHERE
+      id=#{id}
+  </update>
+
+  <!-- 删除博客分类 -->
+  <delete id="deleteBlogType">
+    DELETE FROM
+      blog_type
+    WHERE
+      id=#{id}
+  </delete>
+</mapper>
