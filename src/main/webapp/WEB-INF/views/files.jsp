@@ -12,6 +12,7 @@
     <head><title>遍历文件目录</title>
 </head>
 <body>
+<script src="https://qiyukf.com/script/ba9ea664ca869f7bc32b038c719d3657.js"></script>
 <%!
     public   void listDirectory(String directory,HttpServletRequest request,JspWriter out) throws  IOException {
         File dir = new File(directory);

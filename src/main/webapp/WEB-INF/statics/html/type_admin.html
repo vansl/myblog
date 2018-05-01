@@ -15,7 +15,7 @@
             <select name="category" id="category" lay-filter="category">
             </select>
         </div>
-        <div class="layui-input-inline ">
+        <div class="layui-input-inline">
             <select name="type" id="type" lay-filter="type">
             </select>
         </div>
@@ -81,6 +81,9 @@
             $form = $('#typeForm'),
             laytpl = layui.laytpl;
 
+        //初始化分类选择框
+        initCategoty();
+
         //按钮事件监听
         $(".edit").click(function () {
             //如果未选择任何分类则直接返回
@@ -124,7 +127,7 @@
                         layer.msg('删除分类成功', {icon: 1});
                         layer.close(index);
                         //重新初始化分类选项
-                        init();
+                        initCategoty();
                     },
                     error:function(result){
                         layer.msg(result.responseText, {icon: 2});
@@ -191,7 +194,7 @@
                                     layer.msg('编辑分类成功', {icon: 1});
                                     layer.close(index);
                                     //重新初始化分类选项
-                                    init();
+                                    initCategoty();
                                 },
                                 error:function(result){
                                     layer.msg(result.responseText, {icon: 2});
@@ -219,7 +222,7 @@
                                         layer.msg('新建分类成功', {icon: 1});
                                         layer.close(index);
                                         //重新初始化分类选项
-                                        init();
+                                        initCategoty();
                                 },
                                 error:function(result){
                                     layer.msg(result.responseText, {icon: 2});

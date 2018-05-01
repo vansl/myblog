@@ -10,25 +10,71 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
+<script id="parseTime" type="text/html">
+    {{parseTime(d.time)}}
+</script>
+
+<script type="text/javascript">
+    function parseTime(time){
+        var date = new Date(time);//如果date为13位不需要乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+        return Y+M+D+h+m+s;
+    }
+</script>
+
+<style>
+    div.layui-layer-content{
+        overflow:visible !important;
+    }
+
+</style>
+<script type="text/html" id="typeSelect">
+    <form class="layui-form layui-form-pane" id="typeForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">请选择分类</label>
+            <div class="layui-input-inline">
+                <select name="category" id="category" lay-filter="category">
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="type" id="type" lay-filter="type">
+                </select>
+            </div>
+        </div>
+    </form>
+</script>
+
+<!-- 引入分类选择渲染js -->
+<script type="text/javascript" src="/js/type_select.js"></script>
+
 <script>
+    var blogData;
     //文章管理表格
     layui.table.render({
         elem: '#blog_table',
         width: 1200,
-        url: '/js/testTable.json?'+new Date().getTime(),  //数据接口
-        where:{token:''},
+        url: '/blog/?userId='+'1',  //数据接口
+        done: function(res, curr, count){
+            blogData=JSON.stringify(res);
+        },
         page: true , //开启分页
+        request: {
+            pageName: 'offset' //页码的参数名称，默认：page
+            ,limitName: 'limit' //每页数据量的参数名，默认：limit
+        },
         cols: [[    //表头
-            {field: 'title', title: '标题', width: 200},
-            {field: 'time', title: '发表时间', width: 200,sort: true,
-                templet: function(fileds){
-                    var d=new Date();
-                    d.setTime(fileds.time);
-                    return d.toLocaleDateString();
+            {field: 'title', title: '标题', width: 420},
+            {field: 'time', title: '上传时间', width: 180,sort: true,templet: '#parseTime'},
+            {field: 'pv', title: '阅读量', width: 100},
+            {field: 'typeName', title: '分类', width: 200, sort: true},
+            {field: 'published', title: '状态', width: 100,templet:function (d) {
+                    return d.published==0?'已发表':'草稿';
                 }},
-            {field: 'pv', title: '阅读量', width: 200},
-            {field: 'category', title: '一级分类', width: 200, sort: true},
-            {field: 'type', title: '二级分类', width: 200, sort: true},
             {title:'操作',align:'center',width: 200,toolbar:'#blog_table_bar'}
         ]]
     });
@@ -38,18 +84,58 @@
         var layEvent = obj.event; //获得 lay-event 对应的值
         if(layEvent === 'del'){ //删除
             layer.confirm('确定要删除该文章吗？', function(index){
-
                 layer.close(index);
                 layer.load(1);
                 //向服务器发送删除文章请求
-                $.ajax({
-                    url:"",
+                layui.jquery.ajax({
+                    url:"/blog/"+obj.data.id,
                     type: "DELETE",
+                    data:JSON.stringify({
+                        "userId":1
+                    }),
+                    contentType: "application/json; charset=utf-8",
                     success:function (result) {
                         layer.closeAll('loading');//关闭loading图标
+                        layer.msg("删除成功", {icon: 1});
                         obj.del(); //删除表格对应行并更新缓存
+                    },
+                    error:function (result) {
+                        layer.closeAll('loading');
+                        layer.msg(result.responseText, {icon: 2});
                     }
                 })
+            });
+        }else if(layEvent == 'view'){
+            window.open("/blog/article/"+obj.data.id);
+        }else if(layEvent == 'type'){
+            //请求所选文章分类信息并初始化分类选择面板
+            layui.jquery.ajax({
+                url: "/type/"+obj.data.typeId,
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    //initCategoty(result.id,result.children?result.children[0].id:null);
+                    initCategoty();
+                }
+            });
+
+            //渲染模版视图
+            var view = typeSelect.innerHTML;
+            data={};
+            layui.laytpl(view).render(data,function(html){
+                view=html;
+            });
+            layer.open({
+                type: 1 ,   //Page层类型,
+                btn:['确认'], //按钮
+                btnAlign: 'c',//按钮居中排列
+                title: "选择分类",
+                area: ['600px', 'auto'],
+                skin: 'layui-layer-prompt',
+                shade: 0.6,      //遮罩透明度
+                maxmin: true,    //允许全屏最小化
+                anim: 5 ,        //0-6的动画形式，-1不开启
+                content:view
             });
         }
     });

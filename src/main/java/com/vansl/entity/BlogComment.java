@@ -12,9 +12,10 @@ public class BlogComment {
     private Date time;      //发表时间
     private String name;    //评论者
     private String contact;    //联系方式
-    private String ip;         //评论者ip地址
+    private String ip;         //评论者ip
+    private String address;    //评论者地址
     private String content;    //评论内容
-    private Integer blog_id;   //博客ID
+    private Integer blogId;   //博客ID
 
     public Integer getId() {
         return id;
@@ -56,6 +57,14 @@ public class BlogComment {
         this.ip = ip;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getContent() {
         return content;
     }
@@ -64,11 +73,12 @@ public class BlogComment {
         this.content = content;
     }
 
-    public Integer getBlog_id() {
-        return blog_id;
+    public Integer getBlogId() {
+        return blogId;
     }
 
-    public void setBlog_id(Integer blog_id) {
-        this.blog_id = blog_id;
+    public void setBlogId(Integer blogId) {
+        this.blogId = blogId;
     }
+
 }

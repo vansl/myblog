@@ -24,11 +24,13 @@ CREATE TABLE `user` (
 CREATE TABLE `blog` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '博客ID',
   `title` VARCHAR(90) NOT NULL COMMENT '博客标题',
-  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发表时间',
-  `content` text NOT NULL COMMENT '博客正文',
-  `pv` int NOT NULL COMMENT '博客点击量',
-  `user_id` int NOT NULL COMMENT '用户ID',
-  `type_id` int NOT NULL COMMENT '分类ID',
+  `time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发表时间',
+  `published` INT(1) NOT NULL COMMENT '是否已发表，0已发表，1未发表（在草稿箱）',
+  `content` TEXT NOT NULL COMMENT '博客正文（包含html格式）',
+  `text` TEXT NOT NULL COMMENT '博客正文（纯文本）',
+  `pv`Int NOT NULL COMMENT '博客点击量',
+  `user_id` INT NOT NULL NULL COMMENT '用户ID',
+  `type_id` INT NOT NULL COMMENT '分类ID',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -38,8 +40,8 @@ CREATE TABLE `blog` (
 CREATE TABLE `blog_type` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '分类ID',
   `type_name` VARCHAR(30) NOT NULL COMMENT '分类名称',
-  `parent_id` int NOT NULL COMMENT '父分类id',
-  `user_id` int NOT NULL COMMENT '用户ID',
+  `parent_id` INT NOT NULL COMMENT '父分类id',
+  `user_id` INT NOT NULL COMMENT '用户ID',
   UNIQUE (`type_name`,`parent_id`),
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
@@ -49,11 +51,12 @@ CREATE TABLE `blog_type` (
 --
 CREATE TABLE `blog_comment` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '评论ID',
-  `time` datetime NOT NULL  DEFAULT CURRENT_TIMESTAMP COMMENT '发表时间',
+  `time` DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP COMMENT '发表时间',
   `name` VARCHAR(30) NOT NULL COMMENT '评论者',
   `contact` VARCHAR(90) NOT NULL COMMENT '联系方式',
-  `ip` VARCHAR(15) NOT NULL COMMENT '评论者ip地址',
-  `content` text NOT NULL COMMENT '评论内容',
-  `blog_id` int NOT NULL COMMENT '博客ID',
+  `ip` VARCHAR(15) NOT NULL COMMENT '评论者ip',
+  `address` TINYTEXT NOT NULL COMMENT '评论者地址',
+  `content` TEXT NOT NULL COMMENT '评论内容',
+  `blog_id` INT NOT NULL COMMENT '博客ID',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

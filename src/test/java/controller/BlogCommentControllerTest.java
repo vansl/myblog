@@ -1,8 +1,8 @@
 package controller;
 
 import com.alibaba.fastjson.JSON;
-import com.vansl.controller.BlogTypeController;
-import com.vansl.entity.BlogType;
+import com.vansl.controller.BlogCommentController;
+import com.vansl.entity.BlogComment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,26 +15,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * @author: vansl
- * @create: 18-4-15 下午9:31
+ * @create: 18-4-24 下午11:15
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 加载spring配置文件
 @ContextConfiguration({ "classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-service.xml","classpath:spring/spring-mvc.xml"})
 @WebAppConfiguration
-public class BlogTypeControllerTest {
+public class BlogCommentControllerTest {
+
     @Autowired
-    BlogTypeController blogTypeController;
+    BlogCommentController controller;
 
     @Autowired
     WebApplicationContext wac;
@@ -47,35 +45,15 @@ public class BlogTypeControllerTest {
     }
 
     @Test
-    public void testGetAllData() throws Exception {
-        String result= mockMvc.perform(get("/type?userId=1")).
-                                andDo(print()).
-                                andReturn().
-                                getResponse().
-                                getContentAsString();
-        System.out.println(result);
-    }
-
-    @Test
-    public void testDeleteBlogType() throws Exception {
-        Map<Object,Object> map=new HashMap<>();
-        map.put("userId",1);
-        String data= JSON.toJSONString(map);
-        String result= mockMvc.perform(delete("/type/242").
-                contentType(MediaType.APPLICATION_JSON).content(data)).
-                andDo(print()).
-                andReturn().
-                getResponse().
-                getContentAsString();
-        System.out.println(result);
-    }
-
-    @Test
-    public void testAddBlogType() throws Exception {
-        BlogType type=new BlogType();
-        type.setTypeName("test");
-        String data= JSON.toJSONString(type);
-        String result= mockMvc.perform(post("/type").
+    public void testAddBlogComment() throws Exception {
+        BlogComment comment=new BlogComment();
+        comment.setName("vansl");
+        comment.setBlogId(22);
+        comment.setContact("google@gmail.com");
+        comment.setTime(new Date());
+        comment.setContent("test");
+        String data= JSON.toJSONString(comment);
+        String result= mockMvc.perform(post("/comment").
                 contentType(MediaType.APPLICATION_JSON).content(data)).
                 andDo(print()).
                 andReturn().

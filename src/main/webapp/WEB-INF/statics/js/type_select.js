@@ -1,13 +1,16 @@
 var categoryId;
 var typeId;
+var typeData;
 
 //初始化一级分类
-function init() {
+function initCategoty(categoryId,typeId) {
     //清空当前数据
     layui.jquery("#category").empty();
     layui.jquery("#type").empty();
-    categoryId=null;
-    typeId=null;
+
+    categoryId=categoryId;
+    typeId=typeId;
+    
     //请求数据
     layui.jquery.ajax({
         url: "/type?userId="+1,
@@ -21,6 +24,8 @@ function init() {
             //遍历数据添加节点
             layui.jquery.each(typeData,function(){
                 appendOption(layui.jquery('#typeForm').find('select[name=category]'),this.text,this.text);
+                if(categoryId &&this.id==categoryId){
+                }
             });
             layui.form.render();
         }
@@ -38,9 +43,6 @@ layui.use(['jquery', 'form'], function() {
     var $ = layui.jquery,
         form = layui.form,
         $form = $('#typeForm');
-
-    //调用初始化函数
-    init();
 
     //绑定选择事件
     form.on('select(category)', function(data) {
@@ -65,7 +67,7 @@ layui.use(['jquery', 'form'], function() {
                     //修改全局变量categoryID
                     categoryId=category.id;
                     $.each(category.children,function(index,type){
-                        appendOption($form.find('select[name=type]'),type.text,type.text);
+                        appendOption($('#type'),type.text,type.text);
                     });
                 }
             });

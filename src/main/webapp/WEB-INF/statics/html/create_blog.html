@@ -63,12 +63,17 @@
 <script id="container" name="content" type="text/plain" ></script>
 
 <script type="text/javascript">
+    //初始化分类选择面板
+    init();
+
     layui.use(['jquery', 'form'], function() {
         var $ = layui.jquery,
             form = layui.form,
             $form = $('#typeForm'),
             ue = UE.getEditor('container'),
             createTime;
+
+
 
         //富文本编辑器初始化
         ue.ready(function() {

@@ -1,7 +1,10 @@
 package com.vansl.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -9,20 +12,39 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
  * @author: vansl
- * @create: 18-3-19 下午4:15
+ * @create: 18-4-27 下午11:44
  */
 
 @Controller
-public class FileUploadController  {
+public class FileController {
+
+
+    @GetMapping("/files")
+    public  String listFiles(HttpServletRequest request){
+        return "files";
+    }
+
+    @RequestMapping("/getTime")
+    @ResponseBody
+    public String getTime(@RequestParam String format, HttpServletResponse response){
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("UTF-8");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat (format);
+        return df.format(date);
+    }
 
     @RequestMapping("/fileUpload")
-    public ModelAndView upload(HttpServletRequest request) throws IOException{
+    public ModelAndView upload(HttpServletRequest request) throws IOException {
         long startTime = System.currentTimeMillis();
         ModelAndView result = new ModelAndView("result");
         double totalSize=0;
@@ -59,6 +81,5 @@ public class FileUploadController  {
         }finally {
             return result;
         }
-
     }
 }

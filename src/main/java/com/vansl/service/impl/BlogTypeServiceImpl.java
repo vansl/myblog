@@ -20,7 +20,7 @@ public class BlogTypeServiceImpl implements BlogTypeService{
     @Autowired
     private BlogTypeDao blogTypeDao;
 
-      // 通过id查询博客分类
+      // 通过id查询博客分类及其祖先分类
       @Override
       public TypeTreeNode selectById(Integer id) {
           return getAncestors(id);

@@ -1,4 +1,4 @@
-<%--
+    <%--
   Created by IntelliJ IDEA.
   User: vansl
   Date: 18-3-25
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         .layui-layout-admin .layui-header {
-            background-color: #4E5465;
+            background-color: #23262E;
         }
         .layui-logo img{
             height:40px;

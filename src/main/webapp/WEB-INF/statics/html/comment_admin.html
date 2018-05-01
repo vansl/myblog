@@ -1,52 +1,82 @@
 <div style="padding: 15px;">
-    <table id="type_table" lay-filter="type_table"></table>
+    <table id="comment_table" lay-filter="comment_table"></table>
 </div>
 
 <!-- 评论管理工具条渲染模版-->
-<script type="text/html" id="type_table_bar">
+<script type="text/html" id="comment_table_bar">
     <!-- 跳转到评论所在文章以及页面位置-->
-    <a class="layui-btn layui-btn-xs" lay-event="view" href="" target="_blank">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="view" href="" target="_blank?comment_id=">查看</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
+<script id="parseTime" type="text/html">
+    {{parseTime(d.time)}}
+</script>
+
+<script type="text/javascript">
+    function parseTime(time){
+        var date = new Date(time);//如果date为13位不需要乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+        return Y+M+D+h+m+s;
+    }
+</script>
+
 <script>
-    //文章表格
+    var commentData;
+    //评论表格
     layui.table.render({
-        elem: '#type_table',
+        elem: '#comment_table',
         width: 1200,
-        url: '/js/testTable.json?'+new Date().getTime(),  //数据接口
-        where:{token:''},
+        url: '/comment/?userId='+'1',  //数据接口
+        done: function(res, curr, count){
+                commentData=JSON.stringify(res);
+        },
+        request: {
+            pageName: 'offset' //页码的参数名称，默认：page
+            ,limitName: 'limit' //每页数据量的参数名，默认：limit
+        },
         page: true , //开启分页
         cols: [[    //表头
-            {field: 'title', title: '发表者', width: 200},
-            {field: 'pv', title: '联系方式', width: 200},
-            {field: 'time', title: '发表时间', width: 200,sort: true,
-                templet: function(fileds){
-                    var d=new Date();
-                    d.setTime(fileds.time);
-                    return d.toLocaleDateString();
-            }},
-            {title: '操作',align:'center',width: 200,toolbar:'#type_table_bar'}
+            {field: 'name', title: '评论者', width: 120,sort:true},
+            {field: 'title', title: '文章标题', width: 260,sort: true},
+            {field: 'content', title: '评论内容', width: 260,sort: true},
+            {field: 'ip', title: 'ip地址', width: 120},
+            {field: 'contact', title: '联系方式', width: 200},
+            {field: 'time', title: '发表时间', width: 120,sort: true,templet: '#parseTime'},
+            {title: '操作',align:'center',width: 120,toolbar:'#comment_table_bar'}
         ]]
     });
 
+
     //评论管理表格工具条事件监听
-    layui.table.on('tool(type_table)', function(obj){ //tool是工具条事件名，参数是table原始容器的lay-filter属性值
+    layui.table.on('tool(comment_table)', function(obj){ //tool是工具条事件名，参数是table原始容器的lay-filter属性值
         var layEvent = obj.event; //获得 lay-event 对应的值
         if(layEvent === 'del'){ //删除
             layer.confirm('确定要删除该评论吗？', function(index){
-
                 layer.close(index);
                 layer.load(1);
-                //向服务器发送删除文章请求
-                $.ajax({
-                    url:"",
+                //向服务器发送删除评论请求
+                layui.jquery.ajax({
+                    url:"/comment/"+obj.data.id,
                     type: "DELETE",
+                    data:JSON.stringify({
+                        "userId":1
+                    }),
+                    contentType: "application/json; charset=utf-8",
                     success:function (result) {
                         layer.closeAll('loading');//关闭loading图标
+                        layer.msg("删除成功", {icon: 1});
                         obj.del(); //删除表格对应行并更新缓存
+                    },
+                    error:function (result) {
+                        layer.closeAll('loading');
+                        layer.msg(result.responseText, {icon: 2});
                     }
-
                 })
             });
         }

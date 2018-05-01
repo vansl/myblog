@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- Dao接口完全限定名 -->
+<mapper namespace="com.vansl.dao.BlogCommentDao">
+  <!-- 结果集映射 -->
+  <resultMap id="BlogCommentResult" type="com.vansl.entity.BlogComment">
+    <id property="id" column="id" />
+    <result property="time" column="time"/>
+    <result property="name" column="name"/>
+    <result property="contact" column="contact"/>
+    <result property="ip" column="ip"/>
+    <result property="address" column="address"/>
+    <result property="content" column="content"/>
+    <result property="blogId" column="blog_id"/>
+  </resultMap>
+
+  <!-- 封装SQL语句 -->
+  <!-- blog_comment表中基本字段 -->
+  <sql id="Base_Column_List" >
+    blog_comment.id,blog_comment.time,blog_comment.name,blog_comment.contact,
+    blog_comment.ip,blog_comment.address,blog_comment.content,blog_comment.blog_id
+  </sql>
+
+  <!-- 通过用户id查询所有博客评论 -->
+  <!-- id为接口中的方法名 -->
+  <select id="selectAll" resultType="java.util.HashMap">
+    SELECT
+      <include refid="Base_Column_List"/>,blog.title
+    FROM
+      blog_comment,blog,user
+    WHERE
+      user.id=#{userId}
+    AND
+      blog_comment.blog_id=blog.id
+    AND
+      blog.user_id=user.Id
+  </select>
+
+  <!--  通过博客id查询博客评论 -->
+  <select id="selectByBlogId" resultMap="BlogCommentResult">
+    SELECT
+      <include refid="Base_Column_List"/>
+    FROM
+      blog_comment,blog
+    WHERE
+      blog.id=#{blogId}
+    AND
+      blog_comment.blog_id=blog.id
+  </select>
+
+
+  <!-- 添加博客评论 -->
+  <insert id="insertBlogComment" parameterType="com.vansl.entity.BlogComment" >
+    INSERT INTO
+    blog_comment(
+      blog_comment.name,
+      blog_comment.contact,
+      blog_comment.ip,
+      blog_comment.address,
+      blog_comment.content,
+      blog_comment.blog_id
+    )
+    VALUES(
+      #{name},
+      #{contact},
+      #{ip},
+      #{address},
+      #{content},
+      #{blogId}
+    )
+  </insert>
+
+  <!-- 删除博客评论 -->
+  <delete id="deleteBlogComment">
+    DELETE FROM
+      blog_comment
+    WHERE
+      id=#{id}
+  </delete>
+
+  <!-- 通过博客id删除博客评论 -->
+  <delete id="deleteByBlogId">
+    DELETE FROM
+      blog_comment
+    WHERE
+      blog_id=#{blogId}
+  </delete>
+
+</mapper>

@@ -1,18 +1,14 @@
 package com.vansl.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.vansl.service.BlogService;
+import com.vansl.service.BlogTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author: vansl
@@ -20,31 +16,32 @@ import java.util.Date;
  */
 @Controller
 public class HomeController {
+
+    @Autowired
+    BlogService blogService;
+
+    @Autowired
+    BlogTypeService blogTypeService;
+
     //添加日志器
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     //action映射
     @GetMapping("/")
-    public  String index(HttpServletRequest request){
+    public  String select(HttpServletRequest request){
         //输出日志文件
         logger.info("Build Success");
+        //返回select.jsp
+        return "select";
+    }
+
+    @GetMapping("/index")
+    public  String index(HttpServletRequest request){
+        request.setAttribute("test","welcome");
+        request.setAttribute("articleList",blogService.selectAll(1,true,1,Integer.MAX_VALUE).getData());
+        request.setAttribute("typeData", JSON.toJSONString(blogTypeService.selectAll(1)));
         //返回index.jsp
         return "index";
-    }
-
-    @GetMapping("/files")
-    public  String listFiles(HttpServletRequest request){
-        return "files";
-    }
-
-    @RequestMapping("getTime")
-    @ResponseBody
-    public String getTime(@RequestParam String format, HttpServletResponse response){
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("UTF-8");
-        Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat (format);
-        return df.format(date);
     }
 
 }
