@@ -1,5 +1,7 @@
 package com.vansl.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,20 +29,21 @@ import java.util.Iterator;
 @Controller
 public class FileController {
 
+    //添加日志器
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+    //action映射
+    @GetMapping("/select")
+    public  String select(HttpServletRequest request){
+        //输出日志文件
+        logger.info("Build Success");
+        //返回select.jsp
+        return "select";
+    }
 
     @GetMapping("/files")
     public  String listFiles(HttpServletRequest request){
         return "files";
-    }
-
-    @RequestMapping("/getTime")
-    @ResponseBody
-    public String getTime(@RequestParam String format, HttpServletResponse response){
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("UTF-8");
-        Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat (format);
-        return df.format(date);
     }
 
     @RequestMapping("/fileUpload")
@@ -63,7 +66,7 @@ public class FileController {
                     MultipartFile file = multiRequest.getFile(iter.next().toString());
                     if(file!=null&&file.getOriginalFilename()!=""){
                         System.out.println(file.getOriginalFilename());
-                        String path = request.getServletContext().getRealPath("/WEB-INF/statics/share/")+file.getOriginalFilename();
+                        String path = request.getServletContext().getRealPath("/W   EB-INF/statics/share/")+file.getOriginalFilename();
                         //上传
                         file.transferTo(new File(path));
                         totalSize+=file.getSize()/1048576.0;

@@ -38,4 +38,99 @@
     </if>
   </select>
 
+  <!-- 通过博客id查询博客信息 -->
+  <select id="selectById" resultMap="BlogDataResult">
+    SELECT
+      blog.id,
+      blog.title,
+      blog.time,
+      blog.pv,
+      blog.published,
+      blog.type_id,
+      blog_type.type_name
+    FROM
+      blog,blog_type
+    WHERE
+      blog.type_id=blog_type.id
+    AND
+      blog.id=#{id}
+  </select>
+
+  <!-- 通过分类id查询该分类下的所有博客 -->
+  <select id="selectByTypeId" resultMap="BlogDataResult">
+    SELECT
+      blog.id,
+      blog.title,
+      blog.time,
+      blog.pv,
+      blog.published,
+      blog.type_id
+    FROM
+      blog,blog_type
+    WHERE
+      blog.type_id=blog_type.id
+    AND
+      blog_type.id
+    IN
+      <foreach item="item" index="index" collection="typeIds"
+               open="(" separator="," close=")">
+        #{item}
+      </foreach>
+
+    <if test="published">
+      AND
+        blog.published=0
+    </if>
+  </select>
+
+  <!-- 更新博客分类 -->
+  <select id="selectContentByBlogId" resultType="java.lang.String">
+    SELECT
+      content
+    FROM
+      blog
+    WHERE
+      id=#{id}
+  </select>
+
+  <!-- 更新博客分类 -->
+  <insert id="insertBlog" parameterType="com.vansl.entity.Blog" >
+    INSERT INTO
+      blog(title,pv,content,text,published,user_id,type_id)
+    VALUES
+      (#{title},0,#{content},#{text},#{published},#{userId},#{typeId})
+  </insert>
+
+  <!-- 更新博客 -->
+  <update id="updateBlog" parameterType="com.vansl.entity.Blog" >
+    UPDATE
+      blog
+    <!-- set用于去除多于逗号-->
+    <set>
+      <if test="title != null">title=#{title},</if>
+      <if test="published != null">published=#{published},</if>
+      <if test="content != null">content=#{content},</if>
+      <if test="text != null">text=#{text},</if>
+      <if test="typeId != null">type_id=#{typeId}</if>
+    </set>
+    WHERE
+      id=#{id}
+  </update>
+
+  <!-- 删除博客 -->
+  <delete id="deleteBlog">
+    DELETE FROM
+      blog
+    WHERE
+      id=#{id}
+  </delete>
+
+  <!-- 通过分类id删除该分类下的所有博客 -->
+  <delete id="deleteByTypeId">
+    DELETE FROM
+      blog
+    WHERE
+      type_id=#{type_id}
+  </delete>
+
 </mapper>

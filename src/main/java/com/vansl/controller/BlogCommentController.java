@@ -68,7 +68,6 @@ public class BlogCommentController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public String deleteBlogComment(@PathVariable("id")Integer id,@RequestBody String data,HttpServletResponse response ){
-        System.out.println("ssy");
         // 把请求数据转换成请求对象
         JSONObject json=JSONObject.parseObject(data);
         Integer userId=(Integer) json.get("userId");

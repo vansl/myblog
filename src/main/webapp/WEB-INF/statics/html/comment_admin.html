@@ -56,7 +56,7 @@
     //评论管理表格工具条事件监听
     layui.table.on('tool(comment_table)', function(obj){ //tool是工具条事件名，参数是table原始容器的lay-filter属性值
         var layEvent = obj.event; //获得 lay-event 对应的值
-        if(layEvent === 'del'){ //删除
+        if(layEvent == 'del'){ //删除
             layer.confirm('确定要删除该评论吗？', function(index){
                 layer.close(index);
                 layer.load(1);

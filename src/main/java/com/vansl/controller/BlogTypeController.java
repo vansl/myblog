@@ -33,14 +33,14 @@ public class BlogTypeController {
     // 查询用户的所有分类数据
     @GetMapping(params = {"userId"})
     @ResponseBody
-    public List<TypeTreeNode> getAllData(@RequestParam("userId")Integer userId){
+    public List<TypeTreeNode> getAllData(@RequestParam Integer userId){
         return blogTypeService.selectAll(userId);
     }
 
     // 通过博客id查询博客分类
     @GetMapping(params = {"blogId"})
     @ResponseBody
-    public BlogType getTypeByBlogId(@RequestParam("blogId")Integer blogId){
+    public BlogType getTypeByBlogId(@RequestParam Integer blogId){
         //调用service执行操作
         return blogTypeService.selectByBlogId(blogId);
     }

@@ -33,6 +33,7 @@
     }
 
 </style>
+
 <script type="text/html" id="typeSelect">
     <form class="layui-form layui-form-pane" id="typeForm">
         <div class="layui-form-item">
@@ -106,7 +107,7 @@
                 })
             });
         }else if(layEvent == 'view'){
-            window.open("/blog/article/"+obj.data.id);
+            window.open("/article/"+obj.data.id);
         }else if(layEvent == 'type'){
             //请求所选文章分类信息并初始化分类选择面板
             layui.jquery.ajax({
@@ -114,8 +115,7 @@
                 type: "get",
                 dataType: "json",
                 success: function (result) {
-                    //initCategoty(result.id,result.children?result.children[0].id:null);
-                    initCategoty();
+                    initCategoty(result.id,result.children?result.children[0].id:null);
                 }
             });
 
@@ -135,8 +135,40 @@
                 shade: 0.6,      //遮罩透明度
                 maxmin: true,    //允许全屏最小化
                 anim: 5 ,        //0-6的动画形式，-1不开启
-                content:view
+                content:view,
+                //向服务器发送更新文章分类请求
+                yes: function(index){
+                    layui.jquery.ajax({
+                        url: "/blog/"+obj.data.id,
+                        type: "PUT",
+                        data:JSON.stringify({
+                            "typeId":typeId?typeId:categoryId,
+                            "userId":1
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            //更新表格分类数据
+                            obj.update({
+                                typeName:layui.jquery("#type").val()?layui.jquery("#type").val():layui.jquery("#category").val(),
+                                typeId:typeId?typeId:categoryId
+                            });
+                            layer.msg('编辑分类成功', {icon: 1});
+                            layer.close(index);
+                        },
+                        error:function(result){
+                            layer.msg(result.responseText, {icon: 2});
+                        }
+                    });
+                }
             });
+        }else if(layEvent == 'edit'){
+            //保存要编辑的博客信息后跳转到写博客页面
+            window.editBlogInfo={
+                blogId:obj.data.id,
+                title:obj.data.title,
+                typeId:obj.data.typeId
+            };
+            layui.jquery("div.layui-side dd:nth-child(1) > a").click();
         }
     });
 </script>

@@ -2,7 +2,6 @@ package dao;
 
 import com.alibaba.fastjson.JSON;
 import com.vansl.dao.BlogCommentDao;
-import com.vansl.dto.CommentData;
 import com.vansl.entity.BlogComment;
 import org.junit.Test;
 import org.junit.runner.RunWith;

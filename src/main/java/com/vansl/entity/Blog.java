@@ -10,8 +10,10 @@ public class Blog {
 
     private Integer id;         //博客ID
     private String title;       //博客标题
-    private Date time;          //发表时间
-    private String content;     //博客正文
+    private Date time;          //上传时间
+    private Integer published;  //是否已发表，0已发表，1未发表（在草稿箱）
+    private String content;     //博客正文（包含html格式）
+    private String text;     //博客正文（纯文本）
     private Integer pv;         //博客点击量
     private Integer userId;     //用户ID
     private Integer typeId;     //分类ID
@@ -40,12 +42,28 @@ public class Blog {
         this.time = time;
     }
 
+    public Integer getPublished() {
+        return published;
+    }
+
+    public void setPublished(Integer published) {
+        this.published = published;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Integer getPv() {
@@ -71,4 +89,5 @@ public class Blog {
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
+
 }

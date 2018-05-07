@@ -1,12 +1,18 @@
 package com.vansl.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.vansl.dto.TableData;
+import com.vansl.entity.Blog;
 import com.vansl.service.BlogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author: vansl
@@ -32,4 +38,98 @@ public class BlogController {
          */
         return  blogService.selectAll(userId,false,offset,limit);
     }
+
+    // 查询文章内容
+    @GetMapping("/{id}")
+    @ResponseBody
+    public String getContent(@PathVariable Integer id){
+        /*登录验证功能尚未实现
+         *  Integer loginId=redisUtil.getUser().getUserId();
+         *  if(loginId!=userId){
+         *      return "denied";
+         *  }
+         */
+        return  blogService.selectContentByBlogId(id);
+    }
+
+    // 添加博客
+    @PostMapping
+    @ResponseBody
+    public String addBlog(@RequestBody Blog blog, HttpServletResponse response ){
+        Integer userId=blog.getUserId();
+        /*登录验证功能尚未实现
+         *  Integer loginId=redisUtil.getUser().getUserId();
+         *  if(loginId!=userId){
+         *      return "denied";
+         *  }
+         */
+        Integer result=blogService.insertBlog(blog);
+        //操作失败返回则错误信息
+        if (result==-1){
+            response.setStatus(400);
+            return "error";
+        }else{
+            return "ok";
+        }
+    }
+
+    // 更新博客字段
+    @PutMapping("/{id}")
+    @ResponseBody
+    public String updateBlog(@PathVariable Integer id,@RequestBody Blog blog, HttpServletResponse response ){
+        Integer userId=blog.getUserId();
+        /*登录验证功能尚未实现
+         *  Integer loginId=redisUtil.getUser().getUserId();
+         *  if(loginId!=userId){
+         *      return "denied";
+         *  }
+         */
+        blog.setId(id);
+        Integer result=blogService.updateBlog(blog);
+        //操作失败返回则错误信息
+        if (result==-1){
+            response.setStatus(400);
+            return "error";
+        }else{
+            return "ok";
+        }
+    }
+
+    // 删除博客
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public String deleteBlogComment(@PathVariable("id")Integer id, @RequestBody String data, HttpServletResponse response ){
+        // 把请求数据转换成请求对象
+        JSONObject json=JSONObject.parseObject(data);
+        Integer userId=(Integer) json.get("userId");
+        /*登录验证功能尚未实现
+         *  Integer loginId=redisUtil.getUser().getUserId();
+         *  if(loginId!=userId){
+         *      return "denied";
+         *  }
+         */
+
+        Integer result=blogService.deleteBlog(id);
+        //操作失败返回则错误信息
+        if (result==-1){
+            response.setStatus(400);
+            return "error";
+        }else{
+            return "ok";
+        }
+    }
+
+    @RequestMapping("/getTime")
+    @ResponseBody
+    public String getTime(@RequestParam String format, HttpServletResponse response){
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("UTF-8");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat (format);
+        Logger logger = LoggerFactory.getLogger(HomeController.class);
+        logger.info(format);
+        logger.info(df.format(date));
+        return df.format(date);
+    }
+
 }

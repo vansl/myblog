@@ -1,5 +1,6 @@
 package com.vansl.service.impl;
 
+import com.vansl.dao.BlogDao;
 import com.vansl.dao.BlogTypeDao;
 import com.vansl.dto.TypeTreeNode;
 import com.vansl.entity.BlogType;
@@ -19,6 +20,9 @@ public class BlogTypeServiceImpl implements BlogTypeService{
 
     @Autowired
     private BlogTypeDao blogTypeDao;
+
+    @Autowired
+    BlogDao blogDao;
 
       // 通过id查询博客分类及其祖先分类
       @Override
@@ -158,7 +162,7 @@ public class BlogTypeServiceImpl implements BlogTypeService{
         //删除分类以及所属文章
         try{
             blogTypeDao.deleteBlogType(id);
-            //blogDao.deleteBlogByTypeId(id);
+            blogDao.deleteByTypeId(id);
             return 1;
         }catch (Exception e){
             e.printStackTrace();

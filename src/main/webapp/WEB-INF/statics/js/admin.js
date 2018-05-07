@@ -37,7 +37,7 @@ function load(view) {
         //首次加载页面event为空，需要排除
         if(event){
             //切换到写博客页面时侧边导航收缩
-            if($(event.target).text()=="写博客"){
+            if($(event.target).text()=="写博客"||$(event.target).text()=="编辑"){
                 $('#switchNav').click();
             }
         }
