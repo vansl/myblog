@@ -1,0 +1,7 @@
+#阿里云OSS配置
+#访问域名
+END_POINT=
+#秘钥id
+ACCESS_KEY_ID=
+#秘钥key
+ACCESS_KEY_SECRET=

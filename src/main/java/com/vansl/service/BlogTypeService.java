@@ -11,6 +11,9 @@ import java.util.List;
  */
 public interface BlogTypeService {
 
+    // 通过分类id查询用户id
+    Integer selectUserIdByTypeId(Integer typeId);
+
     // 通过id查询博客分类
     TypeTreeNode selectById(Integer id);
 

@@ -8,8 +8,8 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-  <!-- 加载配置文件 -->
-  <context:property-placeholder location="classpath:config/*.properties" />
+  <!-- 加载数据库配置文件 -->
+  <context:property-placeholder location="classpath:config/db.properties" ignore-unresolvable="true" />
 
   <!-- 数据库连接池 -->
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

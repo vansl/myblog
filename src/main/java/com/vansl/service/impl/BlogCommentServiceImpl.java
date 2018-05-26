@@ -23,6 +23,11 @@ public class BlogCommentServiceImpl implements BlogCommentService {
     BlogCommentDao blogCommentDao;
 
     @Override
+    public Integer selectUserIdByCommentId(Integer commentId) {
+        return blogCommentDao.selectUserIdByCommentId(commentId);
+    }
+
+    @Override
     public TableData selectAll(Integer userId, Integer offset, Integer limit) {
         TableData result=new TableData();
         // 分页并按照评论时间降序排列

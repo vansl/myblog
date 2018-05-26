@@ -11,186 +11,10 @@
 <html>
 <head>
     <title>vansl-个人网站-${welcome}</title>
-    <style>
-        a{
-            text-decoration:none;
-        }
-
-        li{
-            list-style: none;
-        }
-
-        nav.top{
-            background-color: #fff;
-            opacity: .9;
-            width:100%;
-            height:50px;
-            top:0;
-            left:0;
-            position: fixed;
-            border-bottom:solid 1px #e7e7e7;
-            z-index:999;
-        }
-
-        @media (max-width: 1000px) {
-            nav.top{
-                height:180px;
-            }
-        }
-
-        nav .navbar-brand{
-            float: left;
-            font-size: 24px;
-            color: #777;
-            padding: 10px;
-            height: 50px;
-            margin-left: 10px;
-        }
-
-        @media (max-width: 1000px) {
-            nav .navbar-brand{
-                font-size: 58px;
-                padding: 50px;
-                height:180px;
-            }
-        }
-
-        div.navbar-module{
-            font-size: 24px;
-            color: #777;
-        }
-
-        @media (max-width: 1000px) {
-            div.navbar-module{
-                font-size: 58px;
-            }
-        }
-
-        .navbar-module>ul{
-            float: right;
-            display: block;
-            margin: 0;
-        }
-        .navbar-module li{
-            float: left;
-            position: relative;
-            display: block;
-            margin: 0;
-        }
-
-        .navbar-module li>a{
-            text-shadow: 0 1px 0 rgba(255,255,255,.25);
-            height: 30px;
-            padding: 10px 15px;
-            display: block;
-            color: #555;
-        }
-
-        @media (max-width: 1000px) {
-            .navbar-module li>a{
-                height: 120px;
-                padding: 30px 30px;
-            }
-        }
-
-        .navbar-module li.active>a{
-            background-image: linear-gradient(to bottom,#ebebeb 0,#f3f3f3 100%);
-            background-repeat: repeat-x;
-            box-shadow: inset 0 3px 9px rgba(0,0,0,.075);
-            background-color: #e7e7e7;
-        }
-
-        div.content{
-            z-index: 1;
-        }
-        
-        div.category{
-            width:10%;
-            margin-top:20px;
-            margin-left: -30px;
-            position: fixed;
-        }
-
-        @media (max-width: 1000px) {
-            div.category{
-                width:30%;
-            }
-        }
-
-        .category li{
-            margin-top: 3px;
-        }
-        .category ul{
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 20px;
-
-        }
-        .category a{
-            white-space: nowrap;
-            font-size: 18px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #428bca;
-        }
-
-        @media (max-width: 1000px) {
-            .category a {
-                font-size: 43px;
-            }
-        }
-
-        div.article{
-            display: block;
-            margin-left: 10%;
-            margin-top:100px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 1000px) {
-            div.article{
-                margin-top:300px;
-                margin-left: 30%;
-            }
-        }
-
-        .article-list:first-child {
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
-        }
-
-        li.article-list-item{
-            border: 1px solid #ddd;
-            background-color: #fff;
-            cursor: pointer;
-            padding: 15px 20px;
-            margin-bottom: -1px;
-        }
-
-        li.article-list-item:hover{
-            background-color: #EDEDED;
-        }
-
-        .article-list-item a{
-            display: block;
-            font-size: 21px;
-            color: #428bca;
-        }
-
-        @media (max-width: 1000px) {
-            .article-list-item a{
-                font-size: 58px;
-            }
-        }
-
-        .article-list-item a:hover{
-            text-decoration: underline;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/layui/layui.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
 </head>
-
-<script src="/layui/layui.js"></script>
 
 <body>
     <nav class="top">
@@ -204,7 +28,7 @@
                     <a href="/others">其他</a>
                 </li>
                 <li>
-                    <a href="/login">登录</a>
+                    <a href="/login">管理</a>
                 </li>
             </ul>
         </div>
@@ -216,8 +40,8 @@
 
         <div class="article">
             <ul class="article-list">
-                <c:forEach var = "article" items="${articleList}" begin="0">
 
+                <c:forEach var = "article" items="${articleList}" begin="0">
                     <li class="article-list-item">
                         <a href="/article/${article.id}">${article.title}</a>
                     </li>
@@ -227,8 +51,6 @@
         </div>
     </div>
 </body>
-
-<script src="/js/jquery-3.3.1.min.js"></script>
 
 <script type="text/javascript">
     var jq= jQuery.noConflict();

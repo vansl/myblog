@@ -1,23 +1,21 @@
-package com.vansl.entity;
+package com.vansl.dto;
 
 /**
  * @author: vansl
- * @create: 18-3-24 下午11:09
+ * @create: 18-5-23 下午6:00
  */
-public class LoginInfo{
+public class LoginInfo {
 
-    private String username;
-
+    private String userName;
     private String password;
-
     private String captcha;
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

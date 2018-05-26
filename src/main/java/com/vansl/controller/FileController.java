@@ -4,9 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -14,11 +13,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -41,12 +37,16 @@ public class FileController {
         return "select";
     }
 
-    @GetMapping("/files")
-    public  String listFiles(HttpServletRequest request){
+    @GetMapping("/files/{begindir}")
+    public  String listFiles(HttpServletRequest request, @PathVariable String begindir) {
+        System.out.println(begindir);
+        //设置文件遍历起始目录
+        request.setAttribute("beginDir",begindir);
+
         return "files";
     }
 
-    @RequestMapping("/fileUpload")
+    @PostMapping("/fileUpload")
     public ModelAndView upload(HttpServletRequest request) throws IOException {
         long startTime = System.currentTimeMillis();
         ModelAndView result = new ModelAndView("result");
@@ -65,8 +65,7 @@ public class FileController {
                     //一次遍历所有的文件
                     MultipartFile file = multiRequest.getFile(iter.next().toString());
                     if(file!=null&&file.getOriginalFilename()!=""){
-                        System.out.println(file.getOriginalFilename());
-                        String path = request.getServletContext().getRealPath("/W   EB-INF/statics/share/")+file.getOriginalFilename();
+                        String path = "/home/vansl/share/"+file.getOriginalFilename();
                         //上传
                         file.transferTo(new File(path));
                         totalSize+=file.getSize()/1048576.0;
@@ -74,7 +73,6 @@ public class FileController {
                 }
             }
             String uploadTime=String.valueOf((System.currentTimeMillis()-startTime)/1000.0);
-            System.out.print(String.format("%.2f",totalSize));
             result.addObject("size", String.format("%.2f",totalSize));
             result.addObject("uploadTime", uploadTime);
         }catch (MaxUploadSizeExceededException e){

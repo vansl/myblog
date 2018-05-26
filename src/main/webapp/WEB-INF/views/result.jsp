@@ -35,7 +35,7 @@
         文件大小：<c:out value="${requestScope.size}" />MB</br>
         上传耗时：<c:out value="${requestScope.uploadTime}" />秒
         </br>
-        <a href="/files/">点此查看所有文件</a>
+        <a href="/files/share/">点此查看所有文件</a>
     </c:otherwise>
 </c:choose>
 </body>

@@ -83,7 +83,7 @@ function initCategoty(categoryId,typeId) {
 
     //请求数据
     layui.jquery.ajax({
-        url: "/type?userId="+1,
+        url: "/type",
         type: "get",
         dataType: "json",
         success: function (result) {

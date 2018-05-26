@@ -11,6 +11,9 @@ import com.vansl.entity.Blog;
 
 public interface BlogService {
 
+    // 通过博客id查询用户id
+    Integer selectUserIdByBlogId(Integer blogId);
+
     // 通过用户id查询所有博客
     TableData selectAll(Integer userId,Boolean published,Integer offset, Integer limit);
 

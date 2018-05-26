@@ -7,7 +7,6 @@ import com.vansl.dao.BlogTypeDao;
 import com.vansl.dto.BlogData;
 import com.vansl.dto.TableData;
 import com.vansl.entity.Blog;
-import com.vansl.entity.BlogComment;
 import com.vansl.entity.BlogType;
 import com.vansl.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private BlogTypeDao blogTypeDao;
+
+    @Override
+    public Integer selectUserIdByBlogId(Integer blogId) {
+        return blogDao.selectUserIdByBlogId(blogId);
+    }
 
     @Override
     public TableData selectAll(Integer userId, Boolean published,Integer offset, Integer limit) {

@@ -33,8 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration({ "classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-service.xml","classpath:spring/spring-mvc.xml"})
 @WebAppConfiguration
 public class BlogTypeControllerTest {
-    @Autowired
-    BlogTypeController blogTypeController;
 
     @Autowired
     WebApplicationContext wac;

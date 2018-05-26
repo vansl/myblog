@@ -1,0 +1,70 @@
+body {
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 18px;
+}
+@media (max-width: 1000px) {
+    body {
+        font-size:48px;
+    }
+}
+#article-title{
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    padding: 5px;
+    border-bottom: 2px LightGrey solid;
+    width: 98%;
+    line-height: 150%;
+    color: #666666;
+}
+div.inner {
+    margin: 0% 14%;
+    padding: 2% 8% 4% 8%;
+    border: 1px solid LightGrey;
+}
+
+@media (max-width: 1000px) {
+    div.inner {
+        margin: 0% 2%;
+        padding: 1% 4% 2% 4%;
+    }
+}
+
+div.comment-list>div.comment{
+    margin: 2% 14%;
+    border: 1px solid LightGrey;
+    height:auto!important;
+}
+strong{
+    display:block;
+}
+@media (max-width: 1000px) {
+    div.comment-list>div.comment{
+        font-size: 38px;
+        margin: 1% 2%;
+    }
+}
+
+div.submit_commit {
+    margin: 2% 14%;
+    display: grid;
+    grid-row-gap:10px;
+    grid-template-rows: 30px 30px 80px 30px;
+    grid-template-columns: 120px 400px;
+}
+
+@media (max-width: 1000px) {
+    div.submit_commit {
+        margin: 1% 2%;
+        grid-template-rows: 60px 60px 160px 60px;
+        grid-template-columns: 30% 60%;
+        font-size: 38px;
+    }
+}
+
+#comment-content{
+    overflow: hidden;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}

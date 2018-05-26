@@ -23,8 +23,20 @@
     blog_comment.ip,blog_comment.address,blog_comment.content,blog_comment.blog_id
   </sql>
 
-  <!-- 通过用户id查询所有博客评论 -->
+  <!-- 通过博客id查询用户id -->
   <!-- id为接口中的方法名 -->
+  <select id="selectUserIdByCommentId" resultType="java.lang.Integer">
+    SELECT
+      blog.user_id
+    FROM
+      blog_comment,blog
+    WHERE
+      blog_comment.id=#{commentId}
+    AND
+      blog_comment.blog_id=blog.id
+  </select>
+
+  <!-- 通过用户id查询所有博客评论 -->
   <select id="selectAll" resultType="java.util.HashMap">
     SELECT
       <include refid="Base_Column_List"/>,blog.title

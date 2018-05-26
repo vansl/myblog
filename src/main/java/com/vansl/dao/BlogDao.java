@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface BlogDao {
 
+    // 通过博客id查询用户id
+    Integer selectUserIdByBlogId(Integer blogId);
+
     // 通过用户id查询所有文章
     List<BlogData> selectAll(@Param("published")Boolean published, @Param("userId")Integer userId);
 

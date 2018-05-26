@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -33,7 +30,7 @@ public class HomeController {
     @Autowired
     BlogCommentService blogCommentService;
 
-
+    // 主页
     @GetMapping("/")
     public  String index(HttpServletRequest request){
         request.setAttribute("welcome","主页");
@@ -43,6 +40,7 @@ public class HomeController {
         return "index";
     }
 
+    // 选择分类后显示分类所属文章
     @GetMapping(value="/article",params ={"userId","typeId"})
     public  String index(Integer userId,Integer typeId,HttpServletRequest request){
         request.setAttribute("welcome","博客分类");
@@ -52,12 +50,15 @@ public class HomeController {
         return "index";
     }
 
+    // 博客页面
     @GetMapping("/article/{id}")
     public  String article(@PathVariable  Integer id, HttpServletRequest request){
         BlogData blogData=blogService.selectById(id);
+        // 如果未发表则拒绝访问
         if (blogData.getPublished()==1){
             return "denied";
         }
+        // 返回评论信息
         List<BlogComment> comments=blogCommentService.selectByBlogId(id,1,Integer.MAX_VALUE);
         //转换地址和时间
         for (BlogComment comment:comments){
@@ -75,5 +76,4 @@ public class HomeController {
         //返回article.jsp
         return "article";
     }
-
 }

@@ -68,7 +68,7 @@
                     <dd><a href="">修改密码</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">注销</a></li>
+            <li class="layui-nav-item"><a href="/logout">注销</a></li>
 
         </ul>
     </div>

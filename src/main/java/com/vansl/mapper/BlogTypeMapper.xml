@@ -18,8 +18,18 @@
     blog_type.id,blog_type.type_name,blog_type.parent_id,blog_type.user_id
   </sql>
 
-  <!-- 通过id查询博客分类信息 -->
+  <!-- 通过分类id查询用户id -->
   <!-- id为接口中的方法名 -->
+  <select id="selectUserIdByTypeId" resultType="java.lang.Integer">
+    SELECT
+      user_id
+    FROM
+      blog_type
+    WHERE
+      id=#{typeId}
+  </select>
+
+  <!-- 通过id查询博客分类信息 -->
   <select id="selectById" resultMap="BlogTypeResult">
     SELECT
       <include refid="Base_Column_List"/>

@@ -1,4 +1,10 @@
 #数据库配置文件
-db.properties
+/src/main/resources/config/db.properties
+#阿里云OSS配置文件
+/src/main/resources/config/aliyunOSS.properties
+#redis配置文件
+/src/main/resources/config/redis.properties
 #编译文件夹
-target
+/target/
+#不忽略war包
+!target/myblog-1.0-SNAPSHOT.war

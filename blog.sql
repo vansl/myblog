@@ -13,7 +13,7 @@ CREATE TABLE `user` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` VARCHAR(30) NOT NULL COMMENT '用户名',
   `password` VARCHAR(30) NOT NULL COMMENT '用户密码',
-  `role` VARCHAR(20) DEFAULT 'user' COMMENT '用户权限',
+  `role` VARCHAR(20) DEFAULT 'user' COMMENT '用户角色',
   UNIQUE (`username`),
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

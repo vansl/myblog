@@ -1,10 +1,12 @@
 package com.vansl.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.vansl.dto.TableData;
+import com.vansl.service.UserService;
 import com.vansl.utils.IPUtil;
 import com.vansl.entity.BlogComment;
 import com.vansl.service.BlogCommentService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +26,21 @@ public class BlogCommentController {
     @Autowired
     BlogCommentService blogCommentService;
 
+    @Autowired
+    UserService userService;
+
     // 查询用户的所有评论
     @GetMapping(params = {"userId","offset","limit"})
     @ResponseBody
     public TableData getAllData(Integer userId, Integer offset, Integer limit){
-        /*登录验证功能尚未实现
-         *  Integer loginId=redisUtil.getUser().getUserId();
-         *  if(loginId!=userId){
-         *      return "denied";
-         *  }
-         */
+        //身份验证
+        Subject subject = SecurityUtils.getSubject();
+        String userName=(String)subject.getPrincipals().getPrimaryPrincipal();
+        Integer loginId=userService.selectIdByUserName(userName);
+        if(userId!=loginId){
+            return null;
+        }
+
         return  blogCommentService.selectAll(userId,offset,limit);
     }
 
@@ -67,16 +74,15 @@ public class BlogCommentController {
     // 删除博客评论
     @DeleteMapping("/{id}")
     @ResponseBody
-    public String deleteBlogComment(@PathVariable("id")Integer id,@RequestBody String data,HttpServletResponse response ){
-        // 把请求数据转换成请求对象
-        JSONObject json=JSONObject.parseObject(data);
-        Integer userId=(Integer) json.get("userId");
-        /*登录验证功能尚未实现
-         *  Integer loginId=redisUtil.getUser().getUserId();
-         *  if(loginId!=userId){
-         *      return "denied";
-         *  }
-         */
+    public String deleteBlogComment(@PathVariable("id")Integer id,HttpServletResponse response ){
+        //身份验证
+        Subject subject = SecurityUtils.getSubject();
+        String userName=(String)subject.getPrincipals().getPrimaryPrincipal();
+        Integer loginId=userService.selectIdByUserName(userName);
+        Integer userId=blogCommentService.selectUserIdByCommentId(id);
+        if(userId!=loginId){
+            return "denied";
+        }
 
         Integer result=blogCommentService.deleteBlogComment(id);
         //操作失败返回则错误信息

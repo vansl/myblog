@@ -11,6 +11,9 @@ import java.util.Map;
  */
 public interface BlogCommentDao {
 
+    // 通过评论id查询用户id
+    Integer selectUserIdByCommentId(Integer commentId);
+
     // 通过用户id查询所有博客评论
     List<Map> selectAll(Integer userId);
 

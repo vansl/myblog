@@ -1,0 +1,13 @@
+#redis连接信息
+redis.url=
+redis.port=
+redis.auth=
+redis.timeout=300
+#最大分配的对象数
+redis.pool.maxActive=200
+#最大能够保持idel状态的对象数
+redis.pool.maxIdle=50
+redis.pool.minIdle=10
+redis.pool.maxWaitMillis=20000
+#当池内没有返回对象时，最大等待时间
+redis.pool.maxWait=300

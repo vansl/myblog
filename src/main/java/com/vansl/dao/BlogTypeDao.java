@@ -1,7 +1,6 @@
 package com.vansl.dao;
 
 import com.vansl.entity.BlogType;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,6 +9,9 @@ import java.util.List;
  * @create: 18-4-12 下午5:14
  */
 public interface BlogTypeDao {
+
+    // 通过分类id查询用户id
+    Integer selectUserIdByTypeId(Integer typeId);
 
     // 通过id查询博客分类
     BlogType selectById(Integer id);

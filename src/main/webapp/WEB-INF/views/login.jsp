@@ -87,7 +87,7 @@
         <!--<fieldset>-->
         <form class="layui-form" name="loginForm">
             <div class="layui-form-item">
-                <input class="layui-input" type="text" name="username" autocomplete="off" placeholder="用户名" lay-verify="require" />
+                <input class="layui-input" type="text" name="userName" autocomplete="off" placeholder="用户名" lay-verify="require" />
             </div>
             <div class="layui-form-item">
                 <input class="layui-input" type="password" name="password" autocomplete="off" placeholder="密码" lay-verify="require" />
@@ -118,7 +118,7 @@
         //表单验证
         form.verify({
             require:function(value,item){
-                if(item.name=="username"&&value==""){
+                if(item.name=="userName"&&value==""){
                     return "请输入用户名";
                 }else if(item.name=="password"&&value==""){
                     return "请输入密码";
@@ -136,18 +136,17 @@
                 data:JSON.stringify(data.field),
                 type: "post",
                 success:function(result){
-                    result=JSON.parse(result);
-                    if(result.info==="success"){
+                    if(result==="success"){
                         location.replace("/admin");
                     }else{
-                        if(result.info==="error"){
+                        if(result==="error"){
                             layer.alert('系统错误', {icon: 2});
-                        }else if(result.info==="wrong"){
+                        }else if(result==="wrong"){
                             layer.alert('用户名或密码密码错误', {icon: 2});
-                        }else if(result.info==="denied"){
+                        }else if(result==="denied"){
                             layer.alert('权限不足', {icon: 2});
                         }else{
-                            layer.alert(result.info, {icon: 2});
+                            layer.alert(result, {icon: 2});
                         }
                         //请求新的验证码
                         $(".captcha img").attr("src","");

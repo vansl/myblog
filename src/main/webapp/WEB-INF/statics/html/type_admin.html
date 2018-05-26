@@ -119,10 +119,6 @@
                 $.ajax({
                     url: "type/"+(typeId?typeId:categoryId),
                     type: "DELETE",
-                    data:JSON.stringify({
-                        "userId":1
-                    }),
-                    contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         layer.msg('删除分类成功', {icon: 1});
                         layer.close(index);
@@ -187,7 +183,6 @@
                                 data:JSON.stringify({
                                     "id":typeId?typeId:categoryId,
                                     "typeName":$("#editType").val(),
-                                    "userId":1
                                 }),
                                 contentType: "application/json; charset=utf-8",
                                 success: function (result) {
@@ -215,7 +210,6 @@
                                 data:JSON.stringify({
                                     "parentId": categoryId?categoryId:0,
                                     "typeName": $("#createType").val(),
-                                    "userId":1
                                 }),
                                 contentType: "application/json; charset=utf-8",
                                 success: function (result) {

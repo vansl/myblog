@@ -91,10 +91,6 @@
                 layui.jquery.ajax({
                     url:"/blog/"+obj.data.id,
                     type: "DELETE",
-                    data:JSON.stringify({
-                        "userId":1
-                    }),
-                    contentType: "application/json; charset=utf-8",
                     success:function (result) {
                         layer.closeAll('loading');//关闭loading图标
                         layer.msg("删除成功", {icon: 1});
@@ -143,7 +139,6 @@
                         type: "PUT",
                         data:JSON.stringify({
                             "typeId":typeId?typeId:categoryId,
-                            "userId":1
                         }),
                         contentType: "application/json; charset=utf-8",
                         success: function (result) {

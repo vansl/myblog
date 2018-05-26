@@ -64,10 +64,6 @@
                 layui.jquery.ajax({
                     url:"/comment/"+obj.data.id,
                     type: "DELETE",
-                    data:JSON.stringify({
-                        "userId":1
-                    }),
-                    contentType: "application/json; charset=utf-8",
                     success:function (result) {
                         layer.closeAll('loading');//关闭loading图标
                         layer.msg("删除成功", {icon: 1});

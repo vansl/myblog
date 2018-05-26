@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- Dao接口完全限定名 -->
+<mapper namespace="com.vansl.dao.UserDao">
+  <!-- 结果集映射 -->
+  <resultMap id="User" type="com.vansl.entity.User">
+    <id property="id" column="id" />
+    <result property="userName" column="username"/>
+    <result property="password" column="password"/>
+    <result property="role" column="role"/>
+  </resultMap>
+
+  <!-- 通过用户名查询id -->
+  <select id="selectIdByUserName" resultType="java.lang.Integer">
+    SELECT
+      id
+    FROM
+      user
+    WHERE
+      username=#{userName}
+  </select>
+
+  <!-- 通过用户名查询密码 -->
+  <select id="selectPasswordByUserName" resultType="java.lang.String">
+    SELECT
+      password
+    FROM
+      user
+    WHERE
+      username=#{userName}
+  </select>
+
+  <!-- 通过用户名查询角色 -->
+  <select id="selectRoleByUserName">
+    SELECT
+      role
+    FROM
+      user
+    WHERE
+      username=#{userName}
+  </select>
+
+  <!-- 新增用户 -->
+  <insert id="insertBlog" parameterType="com.vansl.entity.User" >
+    INSERT INTO
+      User(username,password,role)
+    VALUES
+      (#{userName},#{password},#{role})
+  </insert>
+
+  <!-- 更新用户 -->
+  <update id="updateBlog" parameterType="com.vansl.entity.User" >
+    UPDATE
+      user
+    <!-- set用于去除多于逗号-->
+    <set>
+      <if test="title != null">username=#{userName},</if>
+      <if test="published != null">password=#{password}</if>
+    </set>
+    WHERE
+      id=#{id}
+  </update>
+
+  <!-- 删除用户 -->
+  <delete id="deleteUser">
+    DELETE FROM
+      user
+    WHERE
+      id=#{id}
+  </delete>
+
+</mapper>

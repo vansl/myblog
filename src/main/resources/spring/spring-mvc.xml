@@ -30,11 +30,9 @@
   <mvc:resources location="/WEB-INF/statics/css/" mapping="/css/**"/>
   <mvc:resources location="/WEB-INF/statics/js/" mapping="/js/**"/>
   <mvc:resources location="/WEB-INF/statics/images/" mapping="/images/**"/>
-  <mvc:resources location="/WEB-INF/statics/share/" mapping="/share/**"/>
   <mvc:resources location="/WEB-INF/statics/layui/" mapping="/layui/**"/>
   <mvc:resources location="/WEB-INF/statics/html/" mapping="/html/**"/>
   <mvc:resources location="/WEB-INF/statics/ueditor/" mapping="/ueditor/**" />
-
 
   <!--文件上传解析器 -->
   <bean id="multipartResolver"
@@ -44,5 +42,13 @@
     <!-- 设定文件上传的最大值500MB，500*1024*1024 -->
     <property name="maxUploadSize" value="522752000"></property>
   </bean>
+
+  <mvc:interceptors>
+    <!-- 文章图片变化处理拦截器 -->
+    <mvc:interceptor>
+      <mvc:mapping path="/blog/**" />
+      <bean class="com.vansl.interceptor.BlogImgInterceptor" />
+    </mvc:interceptor>
+  </mvc:interceptors>
 
 </beans>

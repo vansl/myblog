@@ -1,0 +1,15 @@
+[main]
+#配置数据源
+dataSource=org.apache.commons.dbcp.BasicDataSource
+dataSource.driverClassName=com.mysql.jdbc.Driver
+dataSource.url=jdbc:mysql://localhost:3306/myblog?useUnicode=true&characterEncoding=UTF-8
+dataSource.username=
+dataSource.password=
+#配置Realm
+jdbcRealm=org.apache.shiro.realm.jdbc.JdbcRealm
+jdbcRealm.dataSource=$dataSource
+jdbcRealm.permissionsLookupEnabled=false
+jdbcRealm.authenticationQuery=select password from user where username = ?
+jdbcRealm.userRolesQuery =select role from user username = ?
+#设置Realm
+securityManager.realms=$jdbcRealm

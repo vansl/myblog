@@ -15,8 +15,18 @@
     <result property="typeName" column="type_name"/>
   </resultMap>
 
-  <!-- 通过用户id查询所有文章 -->
+  <!-- 通过博客id查询用户id -->
   <!-- id为接口中的方法名 -->
+  <select id="selectUserIdByBlogId" resultType="java.lang.Integer">
+    SELECT
+      user_id
+    FROM
+      blog
+    WHERE
+      id=#{blogId}
+  </select>
+
+  <!-- 通过用户id查询所有文章 -->
   <select id="selectAll" resultMap="BlogDataResult">
     SELECT
       blog.id,
@@ -83,7 +93,7 @@
     </if>
   </select>
 
-  <!-- 更新博客分类 -->
+  <!-- 通过博客id查询博客内容 -->
   <select id="selectContentByBlogId" resultType="java.lang.String">
     SELECT
       content
@@ -93,7 +103,7 @@
       id=#{id}
   </select>
 
-  <!-- 更新博客分类 -->
+  <!-- 添加博客 -->
   <insert id="insertBlog" parameterType="com.vansl.entity.Blog" >
     INSERT INTO
       blog(title,pv,content,text,published,user_id,type_id)

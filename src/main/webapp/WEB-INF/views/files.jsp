@@ -2,35 +2,59 @@
   Created by IntelliJ IDEA.
   User: vansl
   Date: 18-3-19
-  Time: ÏÂÎç5:15
+  Time: ä¸‹åˆ5:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.io.File"%>
 <%@ page import="java.io.IOException"%>
-<%@ page contentType="text/html;charset=GB2312" language="java" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page contentType="text/html;charset=utf-8" language="java" %>
 <html>
-    <head><title>±éÀúÎÄ¼şÄ¿Â¼</title>
+    <head><title>éå†æ–‡ä»¶ç›®å½•</title>
 </head>
 <body>
 <script src="https://qiyukf.com/script/ba9ea664ca869f7bc32b038c719d3657.js"></script>
 <%!
-    public   void listDirectory(String directory,HttpServletRequest request,JspWriter out) throws  IOException {
+    public   void listDirectory(String directory,HttpServletRequest request,JspWriter out) throws  Exception {
         File dir = new File(directory);
-        if(dir.isFile())            //ÅĞ¶ÏÊÇ·ñÊÇÎÄ¼ş£¬Èç¹ûÊÇÎÄ¼şÔò·µ»Ø¡£
+        if(dir.isFile())            //åˆ¤æ–­æ˜¯å¦æ˜¯æ–‡ä»¶ï¼Œå¦‚æœæ˜¯æ–‡ä»¶åˆ™è¿”å›ã€‚
             return;
-        File [] files=dir.listFiles();        //ÁĞ³öµ±Ç°Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼şºÍÄ¿Â¼
+        File[] files=dir.listFiles();        //åˆ—å‡ºå½“å‰ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶å’Œç›®å½•
         for(int i=0;i<files.length;i++){
-            if(files[i].isDirectory()) {    //Èç¹ûÊÇÄ¿Â¼£¬Ôò¼ÌĞø±éÀú¸ÃÄ¿Â¼
-                listDirectory(request.getServletContext().getRealPath("/WEB-INF/statics/share/") + files[i].getName(), request, out);
+            if(files[i].isDirectory()) {    //å¦‚æœæ˜¯ç›®å½•ï¼Œåˆ™ç»§ç»­éå†è¯¥ç›®å½•
+                //listDirectory("/home/vansl/share/"+ files[i].getName(), request, out);
+                //String url=urlEncode(directory.substring(12),out);
+                //out.println( "<a href=/"+url+">"+files[i].getName()+"</a></br>");    //è¾“å‡ºè¯¥ç›®å½•æˆ–è€…æ–‡ä»¶çš„åå­—
+                continue;
             }
-            out.println( "<a href=\"/share/"+files[i].getName()+"\">"+files[i].getName()+"</a></br>");    //Êä³ö¸ÃÄ¿Â¼»òÕßÎÄ¼şµÄÃû×Ö
+            //String url= URLEncoder.encode(directory.substring(12) + "/" + files[i].getName(), "utf-8");
+            out.println( "<a href=/"+directory.substring(12)+"/"+files[i].getName().replaceAll("\\s","%20")+">"+files[i].getName()+"</a></br>");    //è¾“å‡ºè¯¥ç›®å½•æˆ–è€…æ–‡ä»¶çš„åå­—
         }
     }
+
+    /*
+    public String urlEncode(String sourceStr,JspWriter out) throws Exception{
+        String[] encodeTable = new String[2^8];
+        for(int i=0;i<256;i++) {
+            if(i>='0' && i<='9' || i>='a'&&i<='z' || i>='A' && i<='Z' || i=='-' || i=='_' || i=='.'){
+                encodeTable[i] = (char)i + "";
+            }else{
+                out.println("%" + String.format("%02x",i).toUpperCase());
+                encodeTable[i] = "%" + String.format("%02x",i).toUpperCase();
+            }
+        }
+        final StringBuilder sb = new StringBuilder();
+        for(int i=0;i<sourceStr.length();i++) {
+            sb.append(encodeTable[sourceStr.charAt(i) & 0xFF]);
+        }
+        return sb.toString();
+    }
+    */
 %>
 <%
-    //½«µ±Ç°web³ÌĞòÄ¿Â¼½á¹¹Êä³öµ½¿ØÖÆÌ¨
+    //å°†å½“å‰webç¨‹åºç›®å½•ç»“æ„è¾“å‡ºåˆ°æ§åˆ¶å°
     out.println("--------------------------------------------------------------------------------------------------------------------------------</br>");
-    listDirectory(request.getServletContext().getRealPath("/WEB-INF/statics/share/"),request,out);
+    listDirectory("/home/vansl/"+request.getAttribute("beginDir"),request,out);
     out.println("</br>--------------------------------------------------------------------------------------------------------------------------------");
 %>
 </body>
