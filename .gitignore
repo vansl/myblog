@@ -7,4 +7,4 @@
 #编译文件夹
 /target/
 #不忽略war包
-!target/myblog-1.0-SNAPSHOT.war
+!/target/myblog-1.0-SNAPSHOT.war
