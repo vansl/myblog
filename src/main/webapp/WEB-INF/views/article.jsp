@@ -13,6 +13,7 @@
 <head>
     <title>${blogData.title}</title>
 
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
     <link rel="stylesheet" href="/css/article.css">
 
 </head>

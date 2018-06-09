@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>其他</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
 </head>
 <body>
 

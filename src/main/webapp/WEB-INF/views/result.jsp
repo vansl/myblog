@@ -5,6 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>上传结果</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
     <link type="text/css" rel="styleSheet"  href="/css/a.css" />
     <style>
         a:link {

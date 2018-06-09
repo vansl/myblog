@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>vansl-个人网站-${welcome}</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png" />
     <link rel="stylesheet" href="/css/index.css">
     <script src="/layui/layui.js"></script>
     <script src="/js/jquery-3.3.1.min.js"></script>

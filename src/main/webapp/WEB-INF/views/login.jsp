@@ -13,6 +13,7 @@
 <head>
     <meta charset="utf-8">
     <title>登录</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png" />
     <link rel="stylesheet" href="/layui/css/layui.css" media="all" />
     <style>
 

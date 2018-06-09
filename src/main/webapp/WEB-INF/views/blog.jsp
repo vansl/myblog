@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>匠心程序小站</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
 </head>
 <body>
 welcome to 匠心程序小站.把代码写成诗

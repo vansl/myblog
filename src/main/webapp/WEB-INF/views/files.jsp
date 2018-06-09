@@ -10,8 +10,10 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page contentType="text/html;charset=utf-8" language="java" %>
 <html>
-    <head><title>遍历文件目录</title>
-</head>
+    <head>
+        <title>遍历文件目录</title>
+        <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
+    </head>
 <body>
 <script src="https://qiyukf.com/script/ba9ea664ca869f7bc32b038c719d3657.js"></script>
 <%!

@@ -12,6 +12,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>博客后台管理</title>
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         .layui-layout-admin .layui-header {
