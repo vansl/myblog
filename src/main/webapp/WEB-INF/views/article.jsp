@@ -13,8 +13,13 @@
 <head>
     <title>${blogData.title}</title>
 
-    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png">
+    <link rel="icon" sizes="any" mask="" href="https://vanslblog.oss-cn-shanghai.aliyuncs.com/key_v.png" />
     <link rel="stylesheet" href="/css/article.css">
+    <script type="text/javascript" src="/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
+    <link rel="stylesheet" href="/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css">
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
 
 </head>
 <body  style="height: 100%">
